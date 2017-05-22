@@ -1,9 +1,9 @@
-var webpackConfig = require('./webpack.config');
-webpackConfig.devtool = 'inline-source-map';
-webpackConfig.externals = [];
-
 module.exports = function (config) {
-	config.set({
+	var webpackConfig = require('./webpack.config');
+	webpackConfig.devtool = 'inline-source-map';
+	webpackConfig.externals = [];
+	
+	var karmaConfig = {
 		basePath: './src',
 		frameworks: ['jasmine'],
 		files: [
@@ -37,13 +37,18 @@ module.exports = function (config) {
 				base: 'Chrome',
 				flags: ['--disable-web-security']
 			},
-			Firefox_travis_ci: {
+			FirefoxOnTravis: {
 				base: 'Firefox',
 				flags: ['--no-sandbox']
 			}
-      },
 		},
 		singleRun: true,
 		concurrency: Infinity
-	});
+	};
+	
+	if (process.env.TRAVIS) {
+		karmaConfig.browsers = ['FirefoxOnTravis'];
+	}
+	
+	config.set(karmaConfig);
 };
