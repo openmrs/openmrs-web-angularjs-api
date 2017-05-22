@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "AngularJS (1.x) library for OpenMRS API",
   "main": "dist/index.js",
+  "engines": {
+    "node": "^6.10.0"
+  },
   "scripts": {
+    "clean": "rimraf dist"
     "build:dev": "webpack --progress --colors --env=dev",
     "build:prod": "webpack --progress --colors  --env=prod",
-    "build": "npm run build:prod",
+    "build": "npm run clean && npm run test && npm run build:prod",
     "test": "karma start",
-	"test:debug": "karma start --singleRun=false"
+    "test:debug": "karma start --singleRun=false"
   },
   "repository": {
     "type": "git",

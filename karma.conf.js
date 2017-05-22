@@ -36,7 +36,12 @@ module.exports = function (config) {
 			ChromeWithoutSecurity: {
 				base: 'Chrome',
 				flags: ['--disable-web-security']
+			},
+			Firefox_travis_ci: {
+				base: 'Firefox',
+				flags: ['--no-sandbox']
 			}
+      },
 		},
 		singleRun: true,
 		concurrency: Infinity
