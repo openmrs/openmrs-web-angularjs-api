@@ -1,6 +1,6 @@
 {
   "name": "@openmrs/angularjs-api",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "AngularJS (1.x) library for OpenMRS API",
   "main": "lib/index.js",
   "engines": {
