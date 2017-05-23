@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openmrs/openmrs-angularjs-api.git"
+    "url": "git+https://github.com/openmrs/openmrs-web-angularjs-api.git"
   },
   "keywords": [
     "angularjs",
@@ -24,7 +24,7 @@
   ],
   "author": "rkorytkowski",
   "license": "MPL-2.0",
-  "homepage": "https://github.com/openmrs/openmrs-angularjs-api#readme",
+  "homepage": "https://github.com/openmrs/openmrs-web-angularjs-api#readme",
   "devDependencies": {
     "angular-mocks": "^1.6.4",
     "babel-core": "^6.24.1",
