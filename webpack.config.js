@@ -6,7 +6,7 @@ var nodeExternals = require('webpack-node-externals');
 var config = {
 	entry: './src/index.js',
 	output: {
-		filename: 'index.js',
+		filename: 'index.min.js',
 		path: path.resolve(__dirname, 'lib'),
 		library: 'angularjs-openmrs-api',
 		libraryTarget: 'umd',
