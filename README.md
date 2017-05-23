@@ -1,15 +1,14 @@
 [![Build Status](https://travis-ci.org/openmrs/openmrs-web-angularjs-api.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-web-angularjs-api)
 
-# openmrs-web-angularjs-api
 JavaScript AngularJS (1.x) library exposing OpenMRS API
 
 # Usage
 
-`npm install angularjs-openmrs-api --save`
+`npm install @openmrs/angularjs-api --save`
 
-ES6: `import openmrsRest from 'angularjs-openmrs-api-rest'`;
+ES6: `import openmrsApi from '@openmrs/angularjs-api'`;
 
-ES5: `var openmrsRest = require('angularjs-openmrs-api-rest')`;
+ES5: `var openmrsApi = require('@openmrs/angularjs-api')`;
 
 # Development
 
@@ -31,10 +30,9 @@ Release: `npm version 1.0.0 && git push upstream master && git push upstream --t
 
 Linking is a feature of npm, which allows you to modify the library and test modifications in your project.  
 1) Run `npm link` and `npm run build` from the lib directory.
-2) Run `npm link angularjs-openmrs-api` from your project directory.
+2) Run `npm link @openmrs/angularjs-api` from your project directory.
 3) Build your project.
 
 In order to unlink do:
-
-1) Run `npm unlink angularjs-openmrs-api` from your project directory.
+1) Run `npm unlink @openmrs/angularjs-api` from your project directory.
 2) Build your project.
