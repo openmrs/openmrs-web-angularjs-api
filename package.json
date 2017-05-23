@@ -12,7 +12,7 @@
     "build:prod": "webpack --progress --colors  --env=prod",
     "build": "npm run clean && npm run test && npm run build:prod",
     "test": "karma start",
-    "test:debug": "karma start --singleRun=false"
+    "test:dev": "karma start --singleRun=false"
   },
   "repository": {
     "type": "git",
