@@ -8,6 +8,7 @@ JavaScript AngularJS (1.x) library exposing OpenMRS API
 `npm install angularjs-openmrs-api --save`
 
 ES6: `import openmrsRest from 'angularjs-openmrs-api-rest'`;
+
 ES5: `var openmrsRest = require('angularjs-openmrs-api-rest')`;
 
 # Development
