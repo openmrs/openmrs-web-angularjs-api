@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/openmrs/openmrs-web-angularjs-api.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-web-angularjs-api)
 
-# openmrs-js-angularjs-api
+# openmrs-web-angularjs-api
 JavaScript AngularJS (1.x) library exposing OpenMRS API
 
 # Usage
