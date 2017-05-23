@@ -1,5 +1,5 @@
 {
-  "name": "@openmrs/angularjs-api",
+  "name": "@openmrs/angularjs-openmrs-api",
   "version": "0.4.0",
   "description": "AngularJS (1.x) library for OpenMRS API",
   "main": "lib/index.min.js",
