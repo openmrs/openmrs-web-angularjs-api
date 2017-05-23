@@ -34,5 +34,5 @@ Linking is a feature of npm, which allows you to modify the library and test mod
 3) Build your project.
 
 In order to unlink do:
-1) Run `npm unlink @openmrs/angularjs-api` from your project directory.
+1) Run `npm unlink @openmrs/angularjs-api` and `npm install` from your project directory.
 2) Build your project.
