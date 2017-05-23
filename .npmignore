@@ -1,2 +1,5 @@
 node_modules
 src
+karma.conf.js
+.travis.yml
+webpack.config.js
