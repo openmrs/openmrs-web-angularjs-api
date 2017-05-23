@@ -1,0 +1,16 @@
+{
+  "name": "@openmrs/angularjs-openmrs-api",
+  "authors": [
+    "rkorytkowski"
+  ],
+  "main": "./lib/index.min.js",
+  "description": "JavaScript AngularJS (1.x) library exposing OpenMRS API",
+  "license": "MPL-2.0",
+  "private": false,
+  "ignore": [],
+  "dependencies": {
+    "angular": "1.6.4",
+    "angular-resource": "1.6.4",
+    "angular-translate": "2.15.1"
+  }
+}
