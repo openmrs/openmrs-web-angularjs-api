@@ -2,18 +2,18 @@
   "name": "@openmrs/angularjs-openmrs-api",
   "version": "0.5.1",
   "description": "AngularJS (1.x) library for OpenMRS API",
-  "main": "lib/index.min.js",
+  "main": "lib/index.js",
   "engines": {
     "node": "^6.10.0"
   },
   "scripts": {
     "clean": "rimraf lib",
     "build:dev": "webpack --progress --colors --env=dev",
-    "build:prod": "webpack --progress --colors  --env=prod",
-    "build": "npm run clean && npm run test && npm run build:prod",
+    "build:prod": "webpack --progress --colors --env=prod",
+    "build": "rimraf lib && karma start && webpack --progress --colors --env=prod",
     "test": "karma start",
     "test:dev": "karma start --singleRun=false",
-    "prepublish": "npm run build"
+    "prepublish": "rimraf lib && karma start && webpack --progress --colors --env=prod"
   },
   "repository": {
     "type": "git",

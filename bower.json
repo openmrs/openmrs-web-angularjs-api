@@ -3,7 +3,7 @@
   "authors": [
     "rkorytkowski"
   ],
-  "main": "./lib/index.min.js",
+  "main": "./lib/index.js",
   "description": "JavaScript AngularJS (1.x) library exposing OpenMRS API",
   "license": "MPL-2.0",
   "private": false,

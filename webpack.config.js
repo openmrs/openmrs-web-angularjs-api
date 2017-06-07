@@ -4,9 +4,12 @@ var env = require('yargs').argv.env;
 var nodeExternals = require('webpack-node-externals');
 
 var config = {
-	entry: './src/index.js',
+	entry: {
+		'index': './src/index.js',
+		'index.min': './src/index.js'
+	},
 	output: {
-		filename: 'index.min.js',
+		filename: '[name].js',
 		path: path.resolve(__dirname, 'lib'),
 		library: 'angularjs-openmrs-api',
 		libraryTarget: 'umd',
@@ -34,6 +37,7 @@ if (env === 'dev') {
 	config.devtool = 'source-map';
 	
 	config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+		include: /\.min\.js$/,
 		sourceMap: true,
 		compress: {
 			warnings: false
