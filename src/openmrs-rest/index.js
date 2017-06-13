@@ -10,6 +10,7 @@
 /**
  * The pattern borrowed from https://gist.github.com/brucecoddington/92a8d4b92478573d0f42
  */
+import angular from 'angular';
 import ngResource from 'angular-resource';
 
 export default angular.module('angularjs-openmrs-api-rest', ['ngResource'])
