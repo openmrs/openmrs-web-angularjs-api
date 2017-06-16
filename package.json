@@ -30,7 +30,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "angular-mocks": "^1.6.4",
+    "angular-mocks": "~1.5.8",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-env": "^1.4.0",
@@ -50,8 +50,8 @@
     "yargs": "^8.0.1"
   },
   "dependencies": {
-    "angular": "^1.6.4",
-    "angular-resource": "^1.6.4",
-    "angular-translate": "^2.15.1"
+    "angular": ">=1.5 <=1.6",
+    "angular-resource": ">=1.5 <=1.6",
+    "angular-translate": "~2.15.1"
   }
 }
