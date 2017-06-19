@@ -52,6 +52,7 @@
   "dependencies": {
     "angular": ">=1.5 <=1.6",
     "angular-resource": ">=1.5 <=1.6",
-    "angular-translate": "~2.15.1"
+    "angular-translate": "~2.15.1",
+    "angular-translate-loader-url": "^2.11.0"
   }
 }

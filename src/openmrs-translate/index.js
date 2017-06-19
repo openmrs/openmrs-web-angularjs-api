@@ -8,6 +8,7 @@
  * graphic logo is a trademark of OpenMRS Inc.
  */
 import angularTranslate from 'angular-translate';
+import angularTranslateLoaderUrl from 'angular-translate-loader-url';
 import messagesEn from 'json-loader!./messages/messages_en.json'
 import messagesEs from 'json-loader!./messages/messages_es.json'
 
@@ -25,8 +26,11 @@ function translateConfig(openmrsTranslateProvider) {
 openmrsTranslateProvider.$inject = ['$translateProvider'];
 function openmrsTranslateProvider($translateProvider) {
     function init() {
-        $translateProvider.fallbackLanguage('en');
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.fallbackLanguage('en')
+            .preferredLanguage('en')
+            .useUrlLoader('/' + OPENMRS_CONTEXT_PATH + '/module/uicommons/messages/messages.json')
+            .useSanitizeValueStrategy('escape') // see http://angular-translate.github.io/docs/#/guide/19_security
+            .forceAsyncReload(true)  // this line is what allows use to merge the list of statistically-defined locations with those loaded via URL, see https://angular-translate.github.io/docs/#/guide/12_asynchronous-loading
     }
 
     init();
