@@ -27,7 +27,9 @@ function openmrsTranslateProvider($translateProvider) {
 	
 		$translateProvider.fallbackLanguage('en')
 			.preferredLanguage('en')
-			.useUrlLoader('/' + contextPath + '/module/uicommons/messages/messages.json')
+			.useUrlLoader('/' + contextPath + '/module/uicommons/messages/messages.json',  {
+                queryParameter : 'localeKey'
+            })
 			.useSanitizeValueStrategy('escape') // see http://angular-translate.github.io/docs/#/guide/19_security
 			.forceAsyncReload(true)  // this line is what allows use to merge the list of statistically-defined locations with those loaded via URL, see https://angular-translate.github.io/docs/#/guide/12_asynchronous-loading
     }
