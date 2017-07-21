@@ -14,16 +14,11 @@ export default angular
     .module('angularjs-openmrs-api-translate', ['pascalprecht.translate'])
     .provider('openmrsTranslate', openmrsTranslateProvider).name;
 
-openmrsTranslateProvider.$inject = ['$translateProvider', '$http'];
-function openmrsTranslateProvider($translateProvider, $http) {
+openmrsTranslateProvider.$inject = ['$translateProvider'];
+function openmrsTranslateProvider($translateProvider) {
 
     function init() {
-		var contextPath;
-		if (typeof OPENMRS_CONTEXT_PATH === 'undefined') {
-			contextPath = 'openmrs';
-		} else {
-			contextPath = OPENMRS_CONTEXT_PATH;
-		}
+		var contextPath = getContextPath();
 		
 		$translateProvider.fallbackLanguage('en')
 			.preferredLanguage('en')
@@ -31,23 +26,10 @@ function openmrsTranslateProvider($translateProvider, $http) {
                 queryParameter : 'localeKey'
             })
 			.useSanitizeValueStrategy('escape') // see http://angular-translate.github.io/docs/#/guide/19_security
-			.forceAsyncReload(true)  // this line is what allows use to merge the list of statistically-defined locations with those loaded via URL, see https://angular-translate.github.io/docs/#/guide/12_asynchronous-loading
-		
-		$http.get('/' + contextPath + '/ws/rest/v1/session').then(
-			function success(response) {
-				if (response['locale'] != null) {
-					$translateProvider.preferredLanguage(response['locale']);
-				}
-			}
-		);
+			.forceAsyncReload(true);  // this line is what allows use to merge the list of statistically-defined locations with those loaded via URL, see https://angular-translate.github.io/docs/#/guide/12_asynchronous-loading
 	}
 	
 	init();
-
-    return {
-        addTranslations: addTranslations,
-        $get: ['$translate', provideOpenmrsTranslate]
-    }
 	
     function addTranslations(key, newMessages) {	
         var oldMessages = $translateProvider.translations(key);
@@ -57,13 +39,43 @@ function openmrsTranslateProvider($translateProvider, $http) {
         $translateProvider.translations(key, angular.extend(oldMessages, newMessages))
     }
 
-    function provideOpenmrsTranslate($translate) {
-        return {
-            changeLanguage: changeLanguage
-        };
+    function getContextPath() {
+        if (typeof OPENMRS_CONTEXT_PATH === 'undefined') {
+			return 'openmrs';
+		} else {
+			return OPENMRS_CONTEXT_PATH;
+		}
+    }
+
+    function provideOpenmrsTranslate($translate, $http) {
+        function init() {
+            $http.get('/' + getContextPath() + '/ws/rest/v1/session').then(
+                function(response) {
+                    if (response.data['locale'] != null) {
+                        $translate.use(response.data['locale']);
+                    }
+                }
+            );
+        }
+
+        init(); 
 
         function changeLanguage(key) {
             $translate.use(key);
+            $http.post('/' + getContextPath() + '/ws/rest/v1/session', { 'locale': key }).then(
+                function(response) {
+                    console.log("Locale changed to " + key);
+                }
+            );
         }
+
+        return {
+            changeLanguage: changeLanguage
+        };
+    }
+
+    return {
+        addTranslations: addTranslations,
+        $get: ['$translate', '$http', provideOpenmrsTranslate]
     }
 }
