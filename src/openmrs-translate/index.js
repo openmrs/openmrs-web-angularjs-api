@@ -14,8 +14,8 @@ export default angular
     .module('angularjs-openmrs-api-translate', ['pascalprecht.translate'])
     .provider('openmrsTranslate', openmrsTranslateProvider).name;
 
-openmrsTranslateProvider.$inject = ['$translateProvider'];
-function openmrsTranslateProvider($translateProvider) {
+openmrsTranslateProvider.$inject = ['$translateProvider', '$http'];
+function openmrsTranslateProvider($translateProvider, $http) {
 
     function init() {
 		var contextPath;
@@ -24,7 +24,7 @@ function openmrsTranslateProvider($translateProvider) {
 		} else {
 			contextPath = OPENMRS_CONTEXT_PATH;
 		}
-	
+		
 		$translateProvider.fallbackLanguage('en')
 			.preferredLanguage('en')
 			.useUrlLoader('/' + contextPath + '/module/uicommons/messages/messages.json',  {
@@ -32,7 +32,15 @@ function openmrsTranslateProvider($translateProvider) {
             })
 			.useSanitizeValueStrategy('escape') // see http://angular-translate.github.io/docs/#/guide/19_security
 			.forceAsyncReload(true)  // this line is what allows use to merge the list of statistically-defined locations with those loaded via URL, see https://angular-translate.github.io/docs/#/guide/12_asynchronous-loading
-    }
+		
+		$http.get('/' + contextPath + '/ws/rest/v1/session').then(
+			function success(response) {
+				if (response['locale'] != null) {
+					$translateProvider.preferredLanguage(response['locale']);
+				}
+			}
+		);
+	}
 	
 	init();
 
