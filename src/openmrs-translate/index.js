@@ -51,8 +51,8 @@ function openmrsTranslateProvider($translateProvider) {
         function init() {
             $http.get('/' + getContextPath() + '/ws/rest/v1/session').then(
                 function(response) {
-                    if (response.data['locale'] != null) {
-                        $translate.use(response.data['locale']);
+                    if (response.data['locale'] != null && response.data['locale']['language'] != null) {
+                        $translate.use(response.data['locale']['language']);
                     }
                 }
             );
