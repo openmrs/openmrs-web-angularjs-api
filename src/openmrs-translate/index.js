@@ -9,22 +9,38 @@
  */
 import angularTranslate from 'angular-translate';
 import angularTranslateLoaderUrl from 'angular-translate-loader-url';
+import openmrsRest from '../openmrs-rest';
 
 export default angular
-    .module('angularjs-openmrs-api-translate', ['pascalprecht.translate'])
+    .module('angularjs-openmrs-api-translate', ['pascalprecht.translate', openmrsRest])
+    .factory('openmrsTranslateLoader', openmrsTranslateLoader)
     .provider('openmrsTranslate', openmrsTranslateProvider).name;
+
+/**
+ * Loads translations from a file using translateUrlLoader. It fetches server url from openmrsRest.
+ */
+openmrsTranslateLoader.$inject = ['$translateUrlLoader', 'openmrsRest']; 
+function openmrsTranslateLoader($translateUrlLoader, openmrsRest) {
+    return function (options) {
+        var serverUrl = openmrsRest.getServerUrl();
+        serverUrl.then(
+            function(serverUrl) {
+                options.url = serverUrl + '/module/uicommons/messages/messages.json';
+                options.queryParameter = 'localeKey';
+                return $translateUrlLoader(options);
+            }
+        );
+        return serverUrl;
+    };
+}
 
 openmrsTranslateProvider.$inject = ['$translateProvider'];
 function openmrsTranslateProvider($translateProvider) {
 
-    function init() {
-		var contextPath = getContextPath();
-		
+    function init() {		
 		$translateProvider.fallbackLanguage('en')
-			.preferredLanguage('en')
-			.useUrlLoader('/' + contextPath + '/module/uicommons/messages/messages.json',  {
-                queryParameter : 'localeKey'
-            })
+            .preferredLanguage('en')
+			.useLoader('openmrsTranslateLoader')
 			.useSanitizeValueStrategy('escape') // see http://angular-translate.github.io/docs/#/guide/19_security
 			.forceAsyncReload(true);  // this line is what allows use to merge the list of statistically-defined locations with those loaded via URL, see https://angular-translate.github.io/docs/#/guide/12_asynchronous-loading
 	}
@@ -39,43 +55,56 @@ function openmrsTranslateProvider($translateProvider) {
         $translateProvider.translations(key, angular.extend(oldMessages, newMessages))
     }
 
-    function getContextPath() {
-        if (typeof OPENMRS_CONTEXT_PATH === 'undefined') {
-			return 'openmrs';
-		} else {
-			return OPENMRS_CONTEXT_PATH;
-		}
-    }
+    function provideOpenmrsTranslate($translate, $http, $q, openmrsRest) {
+        var language;
 
-    function provideOpenmrsTranslate($translate, $http) {
         function init() {
-            $http.get('/' + getContextPath() + '/ws/rest/v1/session').then(
-                function(response) {
-                    if (response.data['locale'] != null && response.data['locale']['language'] != null) {
-                        $translate.use(response.data['locale']['language']);
-                    }
-                }
-            );
+            getLanguage();
         }
 
         init(); 
 
-        function changeLanguage(key) {
+        function setLanguage(key) {
             $translate.use(key);
-            $http.post('/' + getContextPath() + '/ws/rest/v1/session', { 'locale': key }).then(
-                function(response) {
-                    console.log("Locale changed to " + key);
-                }
-            );
+            //using create and not update since session is a singleton without a uuid
+            openmrsRest.create('session', { 'locale': key }).then(function() {
+                console.log("Locale changed to " + key);
+            });
+        }
+        
+        function getLanguage() {
+            var deferred = $q.defer();
+            if (angular.isDefined(language)) {
+                deferred.resolve(language);
+            } else {
+                openmrsRest.get('session').then(
+                    function(response) {
+                        if (response['locale'] != null && response['locale']['language'] != null) {
+                            language = response['locale']['language'];
+                            $translate.use(language);
+                        } else {
+                            language = $translate.use();
+                        }
+                        deferred.resolve(language);
+                    },
+                    function(error) {
+                        language = $translate.use();
+                        deferred.resolve(language);
+                    }
+                );
+            }
+            return deferred.promise;
         }
 
         return {
-            changeLanguage: changeLanguage
+            changeLanguage: setLanguage,
+            setLanguage: setLanguage,
+            getLanguage: getLanguage
         };
     }
 
     return {
         addTranslations: addTranslations,
-        $get: ['$translate', '$http', provideOpenmrsTranslate]
+        $get: ['$translate', '$http', '$q', 'openmrsRest', provideOpenmrsTranslate]
     }
 }
