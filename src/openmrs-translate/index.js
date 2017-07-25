@@ -79,8 +79,15 @@ function openmrsTranslateProvider($translateProvider) {
             } else {
                 openmrsRest.get('session').then(
                     function(response) {
-                        if (response['locale'] != null && response['locale']['language'] != null) {
-                            language = response['locale']['language'];
+                        if (response['locale'] != null) {
+                            //TODO: Mark reported in dd85b9060d9c28cd075c2586509e1195687e8a2f
+                            //that Locale is serialized differently on his system.
+                            //We need to support both cases until we clarify why.
+                            if (response['locale']['language'] != null) {
+                                language = response['locale']['language'];
+                            } else {
+                                language = response['locale'];
+                            }
                             $translate.use(language);
                         } else {
                             language = $translate.use();
