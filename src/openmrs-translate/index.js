@@ -22,15 +22,13 @@ export default angular
 openmrsTranslateLoader.$inject = ['$translateUrlLoader', 'openmrsRest']; 
 function openmrsTranslateLoader($translateUrlLoader, openmrsRest) {
     return function (options) {
-        var serverUrl = openmrsRest.getServerUrl();
-        serverUrl.then(
+        return openmrsRest.getServerUrl().then(
             function(serverUrl) {
                 options.url = serverUrl + '/module/uicommons/messages/messages.json';
                 options.queryParameter = 'localeKey';
                 return $translateUrlLoader(options);
             }
         );
-        return serverUrl;
     };
 }
 
