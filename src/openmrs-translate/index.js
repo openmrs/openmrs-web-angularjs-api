@@ -14,7 +14,6 @@ import openmrsRest from '../openmrs-rest';
 export default angular
     .module('angularjs-openmrs-api-translate', ['pascalprecht.translate', openmrsRest])
     .factory('openmrsTranslateLoader', openmrsTranslateLoader)
-    .filter('translateAs', openmrsTranslateAs)
     .provider('openmrsTranslate', openmrsTranslateProvider).name;
 
 /**
@@ -31,13 +30,6 @@ function openmrsTranslateLoader($translateUrlLoader, openmrsRest) {
             }
         );
     };
-}
-
-openmrsTranslateAs.$inject['openmrsTranslate']
-function openmrsTranslateAs(openmrsTranslate) {
-    return function(input, type, name) {
-        return openmrsTranslate.translateAs(input, type, name)
-    }
 }
 
 openmrsTranslateProvider.$inject = ['$translateProvider'];
@@ -61,7 +53,7 @@ function openmrsTranslateProvider($translateProvider) {
         $translateProvider.translations(key, angular.extend(oldMessages, newMessages))
     }
 
-    function provideOpenmrsTranslate($translate, $http, $q,  $filter, openmrsRest) {
+    function provideOpenmrsTranslate($translate, $http, $q, openmrsRest) {
         var language;
 
         function init() {
@@ -109,51 +101,15 @@ function openmrsTranslateProvider($translateProvider) {
             return deferred.promise;
         }
 
-        /*  Used to localize metadata based on our standard format for setting messages properties for metadata, ie:
-         *  ui.i18n.EncounterType.name.5C16E1D6-8E73-47E4-A861-D6AAC03E2224=Disposition
-         *  Standard use cases would be:
-         *  translateAs(encounterType, 'encounterType')
-         *  or
-         *  {{ encounterType | translateAs['encounterType'] }}
-         *  You can also specify the field if it's something other than name.  We use this now for RelationshipTypes
-         *  which have two names (depending on the direction of the relationship):
-         *  {{ relationshipType | translateAs['relationshipType', 'aIstoB'] }}
-         */
-        function translateAs(input, type, field) {
-
-            if (!field) {
-                field = 'name';
-            }
-            // first try to see if we have a custom translation property code
-            if (input.uuid) {
-                var code = "ui.i18n." + type + "." + field + "." + input.uuid;
-                var result = $filter('translate')(code);
-                if (result && result != code) {
-                    return result;
-                }
-            }
-            if (input.display) {
-                return input.display;
-            }
-            if (input[field]) {
-                return input[field];
-            }
-            if (input.name) {
-                return input.name;
-            }
-            return "";
-        }
-
         return {
             changeLanguage: setLanguage,
             setLanguage: setLanguage,
-            getLanguage: getLanguage,
-            translateAs: translateAs
+            getLanguage: getLanguage
         };
     }
 
     return {
         addTranslations: addTranslations,
-        $get: ['$translate', '$http', '$q', '$filter', 'openmrsRest', provideOpenmrsTranslate]
+        $get: ['$translate', '$http', '$q', 'openmrsRest', provideOpenmrsTranslate]
     }
 }
